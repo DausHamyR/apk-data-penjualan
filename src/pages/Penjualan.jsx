@@ -2,7 +2,7 @@ import React from 'react'
 import http from '../helpers/http.helper'
 import moment from 'moment'
 import {BiSearch} from 'react-icons/bi'
-// import {BsFilterLeft} from 'react-icons/bs'
+import {BsFilterLeft} from 'react-icons/bs'
 import { Formik } from 'formik'
 
 function Penjualan() {
@@ -15,9 +15,14 @@ function Penjualan() {
     const [search, setSearch] = React.useState("");
     const [searchByTanggal, setSearchByTanggal] = React.useState("");
     const [btnSearchTanggal, setBtnSearchTanggal] = React.useState(null);
+    const [filter, setFilter] = React.useState(null);
 
     const toggleDropdown = () => {
         setIsDropdownOpen((prevState) => !prevState);
+    };
+
+    const toggleFilter = () => {
+        setFilter((prevState) => !prevState);
     };
 
     const doSearch = async (event) => {
@@ -126,36 +131,68 @@ function Penjualan() {
                     }
                 </form>
             </div>
-            <div className='flex justify-center mt-6 gap-6'>
-                <label htmlFor="my_modal_6" className='text-center cursor-pointer bg-green-400 w-[70px] rounded-md text-white hover:bg-green-500'>Create</label>
-                <label htmlFor="modal_update_stok" className='text-center cursor-pointer bg-blue-400 w-[70px] rounded-md text-white hover:bg-blue-500'>Update</label>
+            <div className='flex justify-center items-center mt-6 gap-24'>
+                <div className='flex justify-center gap-6'>
+                    <label htmlFor="my_modal_6" className='text-center cursor-pointer bg-green-400 w-[70px] rounded-md text-white hover:bg-green-500'>Create</label>
+                    <label htmlFor="modal_update_stok" className='text-center cursor-pointer bg-blue-400 w-[70px] rounded-md text-white hover:bg-blue-500'>Update</label>
+                </div>
+                {filter && <div>tes</div>}
+                <button onClick={()=> toggleFilter()}>
+                    <BsFilterLeft size={40} />
+                </button>
             </div>
-            <div className='flex justify-center mt-12'>
-                <table className="table border-collapse table-fixed">
-                    <thead>
-                        <tr className='hover:bg-[#f5f5f5]'>
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>No</th>
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>Nama Barang</th>
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>Stok</th>
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>Jumlah Terjual</th> 
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>Tanggal Transaksi</th>
-                            <th className='border-2 bg-[#f2f2f2] text-[#333]'>Jenis Barang</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {allDataPenjualan?.map(data => (
+            <div className='flex justify-around mt-12'>
+                <div className='flex flex-col items-center gap-4'>
+                    <div className='text-xl font-bold'>Stok Product</div>
+                    <table className="table border-collapse table-fixed">
+                        <thead>
+                                <tr>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>No</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Nama Barang</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Stok</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Jenis Barang</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                            {allDataProduct?.map(data => (
                             <tr key={data.id}>
                                 <td className='border-2 text-[#333]'>{data.id}</td>
                                 <td className='border-2 text-[#333]'>{data.name}</td>
-                                <td className='border-2 text-[#333]'>{data.stokAkhir}</td>
-                                <td className='border-2 text-[#333]'>{data.terjual}</td>
-                                <td className='border-2 text-[#333]'>{moment(data.createdAt).format('DD-MM-YYYY')}</td>
+                                <td className='border-2 text-[#333]'>{data.stok}</td>
                                 <td className='border-2 text-[#333]'>{data.jenisBarang}</td>
-                                <td onClick={() => deleteDataPenjualan(data.id)} className='bg-red-400 cursor-pointer rounded-md text-white hover:bg-red-500'>Delete</td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div className='flex flex-col items-center gap-4'>
+                    <div className='text-xl font-bold'>Data Penjualan</div>
+                    <table className="table border-collapse table-fixed">
+                        <thead>
+                            <tr>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>No</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Nama Barang</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Stok</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Jumlah Terjual</th> 
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Tanggal Transaksi</th>
+                                <th className='border-2 bg-[#f2f2f2] text-[#333]'>Jenis Barang</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allDataPenjualan?.map(data => (
+                                <tr key={data.id}>
+                                    <td className='border-2 text-[#333]'>{data.id}</td>
+                                    <td className='border-2 text-[#333]'>{data.name}</td>
+                                    <td className='border-2 text-[#333]'>{data.stokAkhir}</td>
+                                    <td className='border-2 text-[#333]'>{data.terjual}</td>
+                                    <td className='border-2 text-[#333]'>{moment(data.createdAt).format('DD-MM-YYYY')}</td>
+                                    <td className='border-2 text-[#333]'>{data.jenisBarang}</td>
+                                    <td onClick={() => deleteDataPenjualan(data.id)} className='bg-red-400 cursor-pointer rounded-md text-white hover:bg-red-500'>Delete</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <input type="checkbox" id="my_modal_6" className="modal-toggle" />
             <div className="modal">
