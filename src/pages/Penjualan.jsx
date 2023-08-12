@@ -185,7 +185,7 @@ function Penjualan() {
                                     <td className='border-2 text-[#333]'>{data.name}</td>
                                     <td className='border-2 text-[#333]'>{data.stokAkhir}</td>
                                     <td className='border-2 text-[#333]'>{data.terjual}</td>
-                                    <td className='border-2 text-[#333]'>{moment(data.createdAt).format('DD-MM-YYYY')}</td>
+                                    <td className='border-2 text-[#333]'>{moment(data.tanggal).format('DD-MM-YYYY')}</td>
                                     <td className='border-2 text-[#333]'>{data.jenisBarang}</td>
                                     <td onClick={() => deleteDataPenjualan(data.id)} className='bg-red-400 cursor-pointer rounded-md text-white hover:bg-red-500'>Delete</td>
                                 </tr>
