@@ -13,8 +13,10 @@ function Penjualan() {
     const [valuesProduct, setValuesProduct] = React.useState();
     const [messageSuccessCreatePenjualan, setMessageSuccessCreatePenjualan] = React.useState("");
     const [search, setSearch] = React.useState("");
+    const [and, setAnd] = React.useState("");
     const [searchByTanggal, setSearchByTanggal] = React.useState("");
-    const [btnSearchTanggal, setBtnSearchTanggal] = React.useState(null);
+    const [btnTanggalAwal, setBtnTanggalAwal] = React.useState(null);
+    const [btnTanggalAkhir, setBtnTanggalAkhir] = React.useState(null);
     const [filter, setFilter] = React.useState(null);
 
     const toggleDropdown = () => {
@@ -40,20 +42,24 @@ function Penjualan() {
         try{
             console.log('masuk')
             event.preventDefault()
-            const {value: searchPenjualan} = event.target.searchPenjualan
-            console.log(searchPenjualan)
-            const body = new URLSearchParams({searchPenjualan}).toString()
+            const {value: tanggalAwal} = event.target.tanggalAwal
+            const {value: tanggalAkhir} = event.target.tanggalAkhir
+            const body = new URLSearchParams({tanggalAwal, tanggalAkhir}).toString()
             console.log(body)
             setSearchByTanggal(body)
-            setBtnSearchTanggal(null)
+            setAnd('AND')
+            setBtnTanggalAkhir(null)
+            if(tanggalAwal === "" && tanggalAkhir === ""){
+                setAnd("")
+            }
         }catch(err){
-            console.log(err)
+            console.log(err)    
         }
     }
 
     React.useEffect(()=> {
         const getAllPenjualan = async() => {
-            const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}`)
+            const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}&and=${and}`)
             setAllDataPenjualan(data.results)
         }
         const getAllProduct = async() => {
@@ -63,7 +69,7 @@ function Penjualan() {
         }
         getAllPenjualan()
         getAllProduct()
-    }, [allDataPenjualan, search, searchByTanggal])
+    }, [allDataPenjualan, search, searchByTanggal, and])
 
     React.useEffect(()=> {
         if(messageSuccessCreatePenjualan){
@@ -117,21 +123,27 @@ function Penjualan() {
 
     return (
         <div>
-            <div className='flex items-center justify-center gap-6'>
+            <div className='flex items-end justify-center gap-6'>
                 <form onSubmit={doSearch} className='flex justify-center items-center mt-12 max-w-[400px] w-[400px] relative'>
                     <input name='search' type="text" placeholder="Search Barang" className="input input-bordered w-full" />
                     <button type="submit" className='absolute right-4'>
                         <BiSearch size={40} className="text-slate-400"/>
                     </button>
                 </form>
-                <form onSubmit={doSearchTanggal} className='flex items-center mt-12 gap-2'>
-                    <input name='searchPenjualan' onChange={()=>setBtnSearchTanggal(true)} type="date" placeholder='Input Price' className="input input-bordered w-full"/>
-                    {btnSearchTanggal && 
-                        <button type='submit' className='btn btn-primary'>Cari</button>
-                    }
-                </form>
+                <div className='flex flex-col items-center'>
+                    <div className='font-bold'>Cari Berdasarkan Rentang Tanggal</div>
+                    <form onSubmit={doSearchTanggal} className='flex items-center mt-2 gap-2'>
+                        <div>Dari</div>
+                        <input name='tanggalAwal' onChange={()=>setBtnTanggalAwal(true)} type="date" className="input input-bordered w-full"/>
+                        <div>Sampai</div>
+                        <input name='tanggalAkhir' onChange={()=>setBtnTanggalAkhir(true)} type="date" className="input input-bordered w-full"/>
+                        {btnTanggalAwal && btnTanggalAkhir && 
+                            <button type='submit' className='btn btn-primary'>Cari</button>
+                        }
+                    </form>
+                </div>
             </div>
-            <div className='flex justify-center items-center mt-6 gap-24'>
+            {/* <div className='flex justify-center items-center mt-6 gap-24'>
                 <div className='flex justify-center gap-6'>
                     <label htmlFor="my_modal_6" className='text-center cursor-pointer bg-green-400 w-[70px] rounded-md text-white hover:bg-green-500'>Create</label>
                     <label htmlFor="modal_update_stok" className='text-center cursor-pointer bg-blue-400 w-[70px] rounded-md text-white hover:bg-blue-500'>Update</label>
@@ -140,7 +152,7 @@ function Penjualan() {
                 <button onClick={()=> toggleFilter()}>
                     <BsFilterLeft size={40} />
                 </button>
-            </div>
+            </div> */}
             <div className='flex justify-around mt-12'>
                 <div className='flex flex-col items-center gap-4'>
                     <div className='text-xl font-bold'>Stok Product</div>
@@ -186,7 +198,7 @@ function Penjualan() {
                                     <td className='border-2 text-[#333]'>{data.stokAkhir}</td>
                                     <td className='border-2 text-[#333]'>{data.terjual}</td>
                                     <td className='border-2 text-[#333]'>{moment(data.tanggal).format('DD-MM-YYYY')}</td>
-                                    <td className='border-2 text-[#333]'>{data.jenisBarang}</td>
+                                    <td className='border-2 text-[#333]'>{data.jenisbarang}</td>
                                     <td onClick={() => deleteDataPenjualan(data.id)} className='bg-red-400 cursor-pointer rounded-md text-white hover:bg-red-500'>Delete</td>
                                 </tr>
                             ))}
