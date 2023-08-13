@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import http from '../helpers/http.helper'
 import moment from 'moment'
 import {BiSearch} from 'react-icons/bi'
@@ -57,11 +57,19 @@ function Penjualan() {
         }
     }
 
+    const getAllPenjualan = useCallback(
+        async () => {
+            try {
+                const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}&and=${and}`)
+                setAllDataPenjualan(data.results)
+            } catch (err) {
+            console.log(err);
+            }
+        },
+        [search, searchByTanggal, and],
+    );
+
     React.useEffect(()=> {
-        const getAllPenjualan = async() => {
-            const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}&and=${and}`)
-            setAllDataPenjualan(data.results)
-        }
         const getAllProduct = async() => {
             const {data} = await http().get(`/product`)
             // console.log(data)
@@ -69,7 +77,7 @@ function Penjualan() {
         }
         getAllPenjualan()
         getAllProduct()
-    }, [allDataPenjualan, search, searchByTanggal, and])
+    }, [getAllPenjualan])
 
     React.useEffect(()=> {
         if(messageSuccessCreatePenjualan){
