@@ -143,16 +143,16 @@ function Penjualan() {
                     </form>
                 </div>
             </div>
-            {/* <div className='flex justify-center items-center mt-6 gap-24'>
+            <div className='flex justify-center items-center mt-6 gap-24'>
                 <div className='flex justify-center gap-6'>
                     <label htmlFor="my_modal_6" className='text-center cursor-pointer bg-green-400 w-[70px] rounded-md text-white hover:bg-green-500'>Create</label>
                     <label htmlFor="modal_update_stok" className='text-center cursor-pointer bg-blue-400 w-[70px] rounded-md text-white hover:bg-blue-500'>Update</label>
                 </div>
-                {filter && <div>tes</div>}
+                {/* {filter && <div>tes</div>}
                 <button onClick={()=> toggleFilter()}>
                     <BsFilterLeft size={40} />
-                </button>
-            </div> */}
+                </button> */}
+            </div>
             <div className='flex justify-around mt-12'>
                 <div className='flex flex-col items-center gap-4'>
                     <div className='text-xl font-bold'>Stok Product</div>
