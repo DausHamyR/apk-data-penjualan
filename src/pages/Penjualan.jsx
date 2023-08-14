@@ -94,7 +94,10 @@ function Penjualan() {
         }
         getAllPenjualan()
         getAllProduct()
-    }, [getAllPenjualan])
+        if(selectedProduct){
+            selectedProduct
+        }
+    }, [getAllPenjualan, selectedProduct])
 
     React.useEffect(()=> {
         if(messageSuccessCreatePenjualan){
@@ -138,7 +141,6 @@ function Penjualan() {
             }).toString();
             console.log(body)
             const {data} = await http().patch(`/penjualan/${valuesProduct}`, body);
-            console.log(data)
             setMessageSuccessCreatePenjualan(data.message)
             setSelectedProduct("Select Product")
         } catch (err) {
