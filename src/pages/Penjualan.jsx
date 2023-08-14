@@ -94,9 +94,7 @@ function Penjualan() {
         }
         getAllPenjualan()
         getAllProduct()
-        if(selectedProduct){
-            selectedProduct
-        }
+        selectedProduct
     }, [getAllPenjualan, selectedProduct])
 
     React.useEffect(()=> {
