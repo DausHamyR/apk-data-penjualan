@@ -15,6 +15,8 @@ function Penjualan() {
     const [search, setSearch] = React.useState("");
     const [and, setAnd] = React.useState("");
     const [searchByTanggal, setSearchByTanggal] = React.useState("");
+    const [sort, setSort] = React.useState("");
+    const [sortBy, setSortBy] = React.useState("");
     const [btnTanggalAwal, setBtnTanggalAwal] = React.useState(null);
     const [btnTanggalAkhir, setBtnTanggalAkhir] = React.useState(null);
     const [filter, setFilter] = React.useState(null);
@@ -25,6 +27,21 @@ function Penjualan() {
 
     const toggleFilter = () => {
         setFilter((prevState) => !prevState);
+    };
+
+    const btnBanyakTerjual = () => {
+        setSort('terjual')
+        setSortBy('DESC')
+    };
+
+    const btnSedikitTerjual = () => {
+        setSort('terjual')
+        setSortBy('ASC')
+    };
+
+    const btnDefaultTerjual = () => {
+        setSort('')
+        setSortBy('')
     };
 
     const doSearch = async (event) => {
@@ -60,13 +77,13 @@ function Penjualan() {
     const getAllPenjualan = useCallback(
         async () => {
             try {
-                const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}&and=${and}`)
+                const {data} = await http().get(`/penjualan?${search}&${searchByTanggal}&and=${and}&sort=${sort}&sortBy=${sortBy}`)
                 setAllDataPenjualan(data.results)
             } catch (err) {
             console.log(err);
             }
         },
-        [search, searchByTanggal, and],
+        [search, searchByTanggal, and, sort, sortBy],
     );
 
     React.useEffect(()=> {
@@ -156,10 +173,18 @@ function Penjualan() {
                     <label htmlFor="my_modal_6" className='text-center cursor-pointer bg-green-400 w-[70px] rounded-md text-white hover:bg-green-500'>Create</label>
                     <label htmlFor="modal_update_stok" className='text-center cursor-pointer bg-blue-400 w-[70px] rounded-md text-white hover:bg-blue-500'>Update</label>
                 </div>
-                {/* {filter && <div>tes</div>}
-                <button onClick={()=> toggleFilter()}>
-                    <BsFilterLeft size={40} />
-                </button> */}
+                <div className='flex gap-2'>
+                    {filter && 
+                    <div className='flex flex-col gap-2'>
+                        <button onClick={()=> btnBanyakTerjual()} className='py-2 px-4 bg-slate-600 rounded-xl text-white'>Terbanyak Terjual</button>
+                        <button onClick={()=> btnSedikitTerjual()} className='py-2 px-4 bg-slate-400 rounded-xl text-white'>Sedikit Terjual</button>
+                        <button onClick={()=> btnDefaultTerjual()} className='py-2 px-4 bg-slate-200 rounded-xl text-black'>Default</button>
+                    </div>
+                    }
+                    <button onClick={()=> toggleFilter()}>
+                        <BsFilterLeft size={40} />
+                    </button>
+                </div>
             </div>
             <div className='flex justify-around mt-12'>
                 <div className='flex flex-col items-center gap-4'>
